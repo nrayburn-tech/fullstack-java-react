@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 
-public abstract class AbstractService<T extends AbstractEntity, U extends RepositoryInterface<T>, V extends MapperInterface<T>> implements ServiceInterface<T, U, V> {
+public abstract class AbstractService<Entity extends AbstractEntity, Repository extends RepositoryInterface<Entity>, Mapper extends MapperInterface<Entity>> implements ServiceInterface<Entity, Repository, Mapper> {
 
     //TODO: Can this be replaced with something else,
     // so it can be tested?

@@ -1,5 +1,7 @@
 package dev.rayburn.backend.mapper;
 
-public interface MapperInterface<T> {
-    void update(T incoming, T existing);
+import dev.rayburn.backend.entity.AbstractEntity;
+
+public interface MapperInterface<Entity extends AbstractEntity> {
+    void update(Entity incoming, Entity existing);
 }
