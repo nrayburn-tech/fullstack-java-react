@@ -1,5 +1,5 @@
 import React, { useEffect, MouseEvent, useCallback, useState } from 'react';
-import { AutoComplete, Button, Col, Form, Input, Modal, Row } from 'antd';
+import { AutoComplete, Button, Col, Form, Input, Modal, Row, SelectProps } from 'antd';
 import { fetchJSON } from '../lib/fetch';
 
 import type { Address, FormProps } from '../../types';
@@ -131,7 +131,7 @@ function AddressForm({ id, beforeCancel, beforeOk, afterCancel, afterOk }: FormP
       state: opt.props.region,
       zip: opt.props.postalcode
     });
-  }, []);
+  }, []) as SelectProps<any>['onSelect'];
 
   return (
     <Modal title='Address' visible={isVisible} onCancel={handleCancel} onOk={handleOk}>
