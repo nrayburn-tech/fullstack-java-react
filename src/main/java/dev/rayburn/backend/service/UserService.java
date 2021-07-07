@@ -1,5 +1,7 @@
 package dev.rayburn.backend.service;
 
+import dev.rayburn.backend.auth.UserPrincipal;
+import dev.rayburn.backend.auth.Utility;
 import dev.rayburn.backend.entity.User;
 import dev.rayburn.backend.mapper.UserMapper;
 import dev.rayburn.backend.repository.UserRepository;
@@ -54,5 +56,13 @@ public class UserService extends AbstractService<User, UserRepository, UserMappe
             user.setPassword(null);
         }
         return super.update(user);
+    }
+
+    public User getAuth(){
+        UserPrincipal userPrincipal = Utility.getAuth();
+        if (userPrincipal == null) {
+            return null;
+        }
+        return userPrincipal.getUser();
     }
 }

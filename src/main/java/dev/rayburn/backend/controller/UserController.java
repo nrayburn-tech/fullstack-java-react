@@ -27,4 +27,9 @@ public class UserController implements ControllerInterface<User, UserRepository,
         return userService;
     }
 
+    @GetMapping("/auth")
+    public User getAuth(){
+        return userService.getAuth();
+    }
+
 }
