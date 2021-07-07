@@ -3,19 +3,19 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import './login.css';
 
 async function login(user: string, pass: string, remember: boolean) {
+  const formData = new FormData();
+  formData.append('username', user);
+  formData.append('password', pass);
+  formData.append('remember', String(remember));
   const res = await fetch('/api/login', {
     method: 'POST',
-    mode: 'no-cors',
-    body: JSON.stringify({ username: user, password: pass, remember })
+    body: formData
   });
 
   // Re-direct on no error.
-  // If we fix the cors issue,
-  // we can re-direct only on res.ok || res.redirected.
-  window.location.href = window.location.origin + '/index';
-  // if (res.ok || res.redirected) {
-  //   window.location.href = window.location.origin + '/index';
-  // }
+  if (res.ok || res.redirected) {
+    window.location.href = window.location.origin;
+  }
 }
 
 function LoginForm() {
