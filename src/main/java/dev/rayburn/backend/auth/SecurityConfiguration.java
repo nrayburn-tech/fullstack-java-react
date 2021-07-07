@@ -1,4 +1,4 @@
-package dev.rayburn.backend.config.auth;
+package dev.rayburn.backend.auth;
 
 import dev.rayburn.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,10 +60,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .formLogin()
                 // TODO: Re-configure to use custom login page.
 //                .loginPage("/login")
-//                .permitAll()
+//                .loginProcessingUrl("/api/login")
+//                .defaultSuccessUrl("/")
+                .permitAll()
                 .and()
             .logout()
-//                .permitAll()
+                .permitAll()
                 .deleteCookies(cookieName, rememberMeCookieName)
                 .and()
             .rememberMe()

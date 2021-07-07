@@ -1,6 +1,7 @@
-package dev.rayburn.backend.config.auth;
+package dev.rayburn.backend.auth;
 
 import dev.rayburn.backend.entity.User;
+import lombok.Data;
 import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
+@Data
 public class UserPrincipal implements UserDetails {
 
     private final User user;

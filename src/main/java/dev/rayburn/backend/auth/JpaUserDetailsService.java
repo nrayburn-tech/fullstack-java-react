@@ -1,4 +1,4 @@
-package dev.rayburn.backend.config.auth;
+package dev.rayburn.backend.auth;
 
 import dev.rayburn.backend.entity.User;
 import dev.rayburn.backend.repository.UserRepository;

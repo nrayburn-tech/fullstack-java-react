@@ -1,4 +1,4 @@
-package dev.rayburn.backend.config.auth;
+package dev.rayburn.backend.auth;
 
 import org.springframework.data.domain.AuditorAware;
 
