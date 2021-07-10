@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { Button, Table } from 'antd';
 import UserForm from './UserForm';
 import { fetchJSON } from '../lib/fetch';
@@ -6,11 +6,28 @@ import { fetchJSON } from '../lib/fetch';
 import type { ColumnProps } from 'antd/es/table';
 import type { User } from '../../types';
 
+type IdAction = { id: number; type: 'id' };
+type RowAction = { rows: number[]; type: 'rows' };
+type IdAndRowAction = { id: number; rows: number[]; type: 'id_rows' };
+
+function reducer(
+  state: { id: number; rows: number[] },
+  action: IdAction | RowAction | IdAndRowAction
+) {
+  if (action.type === 'id') {
+    return { ...state, id: action.id };
+  } else if (action.type === 'rows') {
+    return { ...state, rows: action.rows };
+  } else if (action.type === 'id_rows') {
+    return { id: action.id, rows: action.rows };
+  }
+  throw new Error('Incorrect action type supplied.');
+}
+
 const url = '/api/user';
 export function UserTable() {
-  const [id, setId] = useState(0);
   const [data, setData] = useState<User[]>([]);
-  const [rows, setRows] = useState<number[]>([]);
+  const [{ id, rows }, dispatch] = useReducer(reducer, { id: 0, rows: [] });
 
   useEffect(() => {
     const controller = new AbortController();
@@ -35,9 +52,7 @@ export function UserTable() {
           return (
             <Button
               onClick={() => {
-                setId(record.id);
-                // De-select the other rows, so it is clear what was opened.
-                setRows([record.id]);
+                dispatch({ type: 'id_rows', id: record.id, rows: [record.id] });
               }}
             >
               Open
@@ -66,7 +81,7 @@ export function UserTable() {
     // Send an empty body, so it doesn't error on the backend.
     const data = await fetchJSON(url, { method: 'POST', body: JSON.stringify({}) });
     // Set the id, so it automatically opens the new form.
-    setId(data.id);
+    dispatch({ type: 'id', id: data.id });
     // Eventually update the tables data, timeout to let rendering the form have priority.
     setTimeout(refreshData, 100);
   }, [refreshData]);
@@ -86,10 +101,8 @@ export function UserTable() {
 
   const closeForm = useCallback(async () => {
     // TODO: Doesn't seem to work like I expect it to.
-    // De-select the rows in the table, except the one we had open.
-    setRows([id]);
     // Set the id to close the form.
-    setId(0);
+    dispatch({ type: 'id', id: 0 });
     // Update the table's data.
     await refreshData();
   }, [refreshData]);
@@ -126,7 +139,7 @@ export function UserTable() {
         rowSelection={{
           selectedRowKeys: rows,
           onChange: (selected) => {
-            setRows(selected as number[]);
+            dispatch({ type: 'rows', rows: selected as number[] });
           }
         }}
       />
