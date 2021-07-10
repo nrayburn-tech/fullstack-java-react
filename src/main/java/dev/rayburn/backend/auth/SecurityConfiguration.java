@@ -30,6 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private String rememberMeCookieKey;
     @Value("${server.servlet.session.cookie.name}")
     private String cookieName;
+    @Value("${spring.security.admin.user:#{null}}")
+    private String adminUser;
+    @Value("${spring.security.admin.pass:#{null}}")
+    private String adminPass;
 
     private final UserRepository userRepository;
 
@@ -42,6 +46,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configure(AuthenticationManagerBuilder auth){
         auth.authenticationProvider(daoAuthenticationProvider());
+        try {
+            if (adminUser != null && adminPass != null){
+                auth.inMemoryAuthentication()
+                        .withUser("admin")
+                        .password(passwordEncoder().encode("admin"))
+                        .roles("USER", "ADMIN");
+            }
+        } catch (Exception e){
+            System.err.println("Error configuring local admin user.");
+            e.printStackTrace();
+        }
     }
 
     @Override
