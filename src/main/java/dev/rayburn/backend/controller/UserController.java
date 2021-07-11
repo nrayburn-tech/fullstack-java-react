@@ -5,20 +5,21 @@ import dev.rayburn.backend.mapper.UserMapper;
 import dev.rayburn.backend.repository.UserRepository;
 import dev.rayburn.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 @RequestMapping("/api/user")
 @RestController
 public class UserController implements ControllerInterface<User, UserRepository, UserService, UserMapper> {
 
-    private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
     @Autowired
-    UserController(PasswordEncoder passwordEncoder, UserService userService){
-        this.passwordEncoder = passwordEncoder;
+    UserController(UserService userService){
         this.userService = userService;
     }
 
@@ -30,6 +31,18 @@ public class UserController implements ControllerInterface<User, UserRepository,
     @GetMapping("/auth")
     public User getAuth(){
         return userService.getAuth();
+    }
+
+    @PostMapping("/register")
+    public User register(@RequestBody User user){
+        return userService.register(user);
+    }
+
+    @GetMapping("/registerConfirm")
+    public ModelAndView registerConfirm(HttpServletRequest request, @RequestParam String token){
+        HttpSession session = request.getSession(true);
+        userService.registerConfirmation(token, session);
+        return new ModelAndView("redirect:/");
     }
 
 }

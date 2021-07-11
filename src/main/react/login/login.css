@@ -7,7 +7,7 @@
   margin-top: 5%;
 }
 
-.login-form > div {
+.login-form > .ant-row {
   width: 30%;
   justify-content: center;
   align-items: center;

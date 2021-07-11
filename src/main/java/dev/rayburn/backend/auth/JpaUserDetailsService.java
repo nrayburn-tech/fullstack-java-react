@@ -25,4 +25,8 @@ public class JpaUserDetailsService implements UserDetailsService {
         log.info("Found user {}", user);
         return new UserPrincipal(user);
     }
+
+    public UserDetails loadUserByUser(User user) throws UsernameNotFoundException {
+        return new UserPrincipal(user);
+    }
 }

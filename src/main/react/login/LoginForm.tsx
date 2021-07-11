@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
 import './login.css';
 
-async function login(user: string, pass: string, remember: boolean) {
+async function loginUser(user: string, pass: string, remember: boolean) {
   const formData = new FormData();
   formData.append('username', user);
   formData.append('password', pass);
@@ -18,32 +18,67 @@ async function login(user: string, pass: string, remember: boolean) {
   }
 }
 
+async function registerUser(user: string, pass: string) {
+  const res = await fetch('/api/user/register', {
+    method: 'POST',
+    body: JSON.stringify({ email: user, password: pass }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  await res.json();
+}
+
 function LoginForm() {
-  const onFinish = async (values: any) => {
-    await login(values.username, values.password, values.remember);
+  const [form] = Form.useForm();
+  const login = async (values: any) => {
+    await loginUser(values.username, values.password, values.remember);
+  };
+
+  const register = async () => {
+    const { username, password } = form.getFieldsValue();
+    await registerUser(username, password);
   };
 
   return (
-    <Form initialValues={{ remember: true }} onFinish={onFinish} className='login-form'>
-      <Form.Item
-        label='Username'
-        name='username'
-        rules={[{ required: true, message: 'Please input your username!' }]}
-      >
-        <Input />
-      </Form.Item>
+    <Form initialValues={{ remember: true }} onFinish={login} form={form} className='login-form'>
+      <Row>
+        <Col span={24}>
+          <Form.Item
+            label='Username'
+            name='username'
+            rules={[{ required: true, message: 'Please input your username!' }]}
+            labelCol={{ span: 24 }}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <Form.Item
+            label='Password'
+            name='password'
+            rules={[{ required: true, message: 'Please input your password!' }]}
+            labelCol={{ span: 24 }}
+          >
+            <Input.Password />
+          </Form.Item>
+        </Col>
+      </Row>
 
-      <Form.Item
-        label='Password'
-        name='password'
-        rules={[{ required: true, message: 'Please input your password!' }]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item name='remember' valuePropName='checked'>
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
+      <Row style={{ marginBottom: '24px' }}>
+        <Col span={12}>
+          <Form.Item name='remember' valuePropName='checked' style={{ marginBottom: '0' }}>
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+        </Col>
+        <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button htmlType='button' onClick={register}>
+            Register
+          </Button>
+        </Col>
+      </Row>
 
       <Button type='primary' htmlType='submit'>
         Submit
