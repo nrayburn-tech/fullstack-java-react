@@ -26,27 +26,4 @@ public abstract class AbstractEntity {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
-    public AbstractEntity(AbstractEntity abstractEntity){
-        this.id = abstractEntity.getId();
-        this.createDate = abstractEntity.getCreateDate();
-        this.modifyDate = abstractEntity.getModifyDate();
-    }
-
-    public AbstractEntity(AbstractEntity incoming, AbstractEntity existing){
-        this(existing);
-        if (isNotNull(incoming.getId())){
-            this.id = incoming.getId();
-        }
-        if (isNotNull(incoming.getCreateDate())){
-            this.createDate = incoming.getCreateDate();
-        }
-        if (isNotNull(incoming.getModifyDate())){
-            this.modifyDate = incoming.getModifyDate();
-        }
-    }
-
-    protected boolean isNotNull(Object obj){
-        return obj != null;
-    }
-
 }
