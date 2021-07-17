@@ -110,8 +110,8 @@ public class UserService extends AbstractService<User, UserRepository, UserMappe
 
     public User getAuth(){
         UserPrincipal userPrincipal = Utility.getAuth();
-        if (userPrincipal == null) {
-            return null;
+        if (userPrincipal == null || userPrincipal.getUser() == null) {
+            throw new RuntimeException("User could not be found");
         }
         return userPrincipal.getUser();
     }
