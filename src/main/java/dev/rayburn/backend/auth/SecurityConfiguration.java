@@ -34,6 +34,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private String adminUser;
     @Value("${spring.security.admin.pass:#{null}}")
     private String adminPass;
+    @Value("${app.environment:#{null}}")
+    private Environment environment;
 
     private final UserRepository userRepository;
 
@@ -61,6 +63,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        if (!environment.equals(Environment.PRODUCTION)){
+            http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
+            // For h2 console
+            http.headers().frameOptions().sameOrigin();
+        }
         http
             .cors().configurationSource(corsConfigurationSource())
                 .and()
@@ -117,4 +124,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService(){
         return new JpaUserDetailsService(userRepository);
     }
+}
+
+enum Environment {
+    PRODUCTION,
+    DEVELOPMENT,
+    TEST
 }
