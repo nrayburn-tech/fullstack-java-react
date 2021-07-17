@@ -1,0 +1,44 @@
+{
+  "properties": [
+    {
+      "name": "app.environment",
+      "type": "dev.rayburn.backend.auth.Environment",
+      "description": "Set the environment for the application to modify some runtime behavior."
+    },
+    {
+      "name": "app.url",
+      "type": "java.lang.String",
+      "description": "This url is used when generating URLs.  For example, registration links."
+    },
+    {
+      "name": "spring.mail.from",
+      "type": "java.lang.String",
+      "description": "This is the email address that should send the email.  If it is not specified, then spring.mail.username is used instead."
+    },
+    {
+      "name": "spring.security.admin.user",
+      "type": "java.lang.String",
+      "description": "The username of an in memory admin user to use for authentication."
+    },
+    {
+      "name": "spring.security.admin.pass",
+      "type": "java.lang.String",
+      "description": "The password of an in memory admin user to use for authentication."
+    },
+    {
+      "name": "spring.security.rememberme.cookie.name",
+      "type": "java.lang.String",
+      "description": "The name to use for the remember me login cookie."
+    },
+    {
+      "name": "spring.security.rememberme.cookie.length",
+      "type": "java.lang.Integer",
+      "description": "The length to use for the remember me login cookie."
+    },
+    {
+      "name": "spring.security.rememberme.cookie.key",
+      "type": "java.lang.String",
+      "description": "The secret key to use when generating the remember me login cookie."
+    }
+  ]
+}
