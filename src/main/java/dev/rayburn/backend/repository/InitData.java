@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -20,6 +21,8 @@ public class InitData {
     private UserRepository userRepository;
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @EventListener
     public void handleContextRefresh(ContextRefreshedEvent event){
@@ -28,6 +31,7 @@ public class InitData {
         userOne.setLastName("Rayburn");
         userOne.setEnabled(true);
         userOne.setEmail("nrayburn@email.com");
+        userOne.setPassword(passwordEncoder.encode("password"));
         userOne.setRoles(Set.of("USER"));
         userRepository.save(userOne);
     }
