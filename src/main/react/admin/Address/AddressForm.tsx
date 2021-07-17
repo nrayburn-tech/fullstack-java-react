@@ -107,7 +107,7 @@ function AddressForm({ id, beforeCancel, beforeOk, afterCancel, afterOk }: FormP
     if (text.length < 4) {
       return;
     }
-    autocompleteTimer = setTimeout(async () => {
+    autocompleteTimer = window.setTimeout(async () => {
       const results = await getAddressResults(text);
       const newOpts = [];
       for (const result of results) {

@@ -17,5 +17,5 @@
     "jsx": "react",
     "baseUrl": "./"
   },
-  "include": ["./main", "./login", "./types.d.ts", "./"]
+  "include": ["./admin", "./login", "./user", "./types.d.ts", "./"]
 }

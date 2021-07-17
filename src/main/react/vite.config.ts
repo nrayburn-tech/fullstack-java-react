@@ -9,7 +9,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         login: resolve(__dirname, 'login.html'),
-        index: resolve(__dirname, 'index.html')
+        index: resolve(__dirname, 'index.html'),
+        admin: resolve(__dirname, 'admin.html')
       },
       output: {
         manualChunks: undefined
