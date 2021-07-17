@@ -86,6 +86,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
             .logout()
+                .logoutUrl("/api/logout")
                 .permitAll()
                 .deleteCookies(cookieName, rememberMeCookieName)
                 .and()
