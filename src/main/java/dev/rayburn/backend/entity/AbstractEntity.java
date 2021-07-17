@@ -9,8 +9,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
-// Trying to fix CreatedDate and LastModifiedDate
-//@EntityListeners(NullAuditorAware.class)
 @MappedSuperclass
 @NoArgsConstructor
 public abstract class AbstractEntity {
