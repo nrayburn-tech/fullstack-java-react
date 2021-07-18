@@ -1,3 +1,5 @@
 body {
   margin: 8px;
+  height: calc(100% - 16px);
+  width: calc(100% - 16px);
 }
