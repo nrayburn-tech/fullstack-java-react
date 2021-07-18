@@ -1,5 +1,5 @@
 // Lazy loaded only when needed.
-import type { redirect } from '../admin/component/loginRedirect';
+import type { redirect } from '../components/loginRedirect';
 
 let loginRedirect: redirect;
 /**
@@ -33,7 +33,7 @@ export async function fetchJSON(input: RequestInfo, init?: RequestInit) {
   if (res.redirected) {
     if (res.url.endsWith('/login')) {
       if (!loginRedirect) {
-        loginRedirect = (await import('../admin/component/loginRedirect')).default;
+        loginRedirect = (await import('../components/loginRedirect')).default;
       }
       loginRedirect(res.url);
     }
