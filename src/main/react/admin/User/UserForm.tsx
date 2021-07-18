@@ -1,13 +1,11 @@
 import React, { useEffect, MouseEvent, useCallback, useState } from 'react';
-import { Checkbox, Col, Form, Input, Modal, Row, Select } from 'antd';
-import { fetchJSON } from '../lib/fetch';
+import { Form, Modal } from 'antd';
+import UserFormComp, { getUser, updateUser } from '../../components/UserForm';
 
 import type { FormProps, User } from '../../types';
 
-const { Item, useForm } = Form;
-const { Option } = Select;
+const { useForm } = Form;
 
-const url = '/api/user';
 function UserForm({ id, beforeCancel, beforeOk, afterCancel, afterOk }: FormProps) {
   const [form] = useForm<User>();
   const [isVisible, setVisible] = useState(false);
@@ -15,7 +13,7 @@ function UserForm({ id, beforeCancel, beforeOk, afterCancel, afterOk }: FormProp
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
-    fetchJSON(url + '/' + id, { signal: signal })
+    getUser(id, signal)
       .then((data) => {
         form.setFieldsValue(data);
         setVisible(true);
@@ -36,10 +34,7 @@ function UserForm({ id, beforeCancel, beforeOk, afterCancel, afterOk }: FormProp
       try {
         const data = await form.validateFields();
 
-        await fetchJSON(url, {
-          method: 'PATCH',
-          body: JSON.stringify(data)
-        });
+        await updateUser(data);
         afterOk?.(e);
         setVisible(false);
       } catch (err) {
@@ -66,73 +61,7 @@ function UserForm({ id, beforeCancel, beforeOk, afterCancel, afterOk }: FormProp
   return (
     <Modal title='User' visible={isVisible} onCancel={handleCancel} onOk={handleOk}>
       <Form<User> form={form} labelCol={{ span: 24 }}>
-        <Item hidden name='id'>
-          <Input autoComplete='off' />
-        </Item>
-        <Row>
-          <Col span={10}>
-            <Item
-              name='firstName'
-              label='First Name'
-              rules={[{ required: true, message: 'Please input your first name.' }]}
-            >
-              <Input autoComplete='off' />
-            </Item>
-          </Col>
-          <Col span={10} offset={2}>
-            <Item
-              name='lastName'
-              label='Last Name'
-              rules={[{ required: true, message: 'Please input your last name.' }]}
-            >
-              <Input autoComplete='off' />
-            </Item>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={16}>
-            <Item
-              name='email'
-              label='Email'
-              rules={[
-                { required: true, message: 'Please input your email address.', type: 'email' }
-              ]}
-            >
-              <Input autoComplete='off' />
-            </Item>
-          </Col>
-          <Col span={6} offset={2}>
-            <Item name='enabled' label='Enabled' valuePropName='checked'>
-              <Checkbox />
-            </Item>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={10}>
-            <Item
-              name='phoneOne'
-              label='Phone One'
-              rules={[{ required: true, message: 'Please input your phone number.' }]}
-            >
-              <Input autoComplete='off' />
-            </Item>
-          </Col>
-          <Col span={10} offset={2}>
-            <Item name='phoneTwo' label='Phone Two'>
-              <Input autoComplete='off' />
-            </Item>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <Item name='roles' label='Roles'>
-              <Select mode='multiple' allowClear>
-                <Option value='USER'>User</Option>
-                <Option value='ADMIN'>Admin</Option>
-              </Select>
-            </Item>
-          </Col>
-        </Row>
+        <UserFormComp />
       </Form>
     </Modal>
   );

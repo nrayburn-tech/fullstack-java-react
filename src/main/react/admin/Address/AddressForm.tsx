@@ -1,6 +1,6 @@
 import React, { useEffect, MouseEvent, useCallback, useState } from 'react';
 import { AutoComplete, Button, Col, Form, Input, Modal, Row, SelectProps } from 'antd';
-import { fetchJSON } from '../lib/fetch';
+import { fetchJSON } from '../../lib/fetch';
 
 import type { Address, FormProps } from '../../types';
 

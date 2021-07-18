@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Table } from 'antd';
 import AddressForm from './AddressForm';
-import { fetchJSON } from '../lib/fetch';
+import { fetchJSON } from '../../lib/fetch';
 
 import type { ColumnProps } from 'antd/es/table';
 import type { Address, User } from '../../types';

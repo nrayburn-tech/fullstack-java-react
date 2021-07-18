@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { Button, Table } from 'antd';
 import UserForm from './UserForm';
-import { fetchJSON } from '../lib/fetch';
+import { fetchJSON } from '../../lib/fetch';
 
 import type { ColumnProps } from 'antd/es/table';
 import type { User } from '../../types';
