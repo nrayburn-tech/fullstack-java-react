@@ -46,7 +46,7 @@ function UserForm({ id, beforeCancel, beforeOk, afterCancel, afterOk }: FormProp
         }
       }
     },
-    [afterOk, beforeOk, form, id]
+    [afterOk, beforeOk, form]
   );
 
   const handleCancel = useCallback(
