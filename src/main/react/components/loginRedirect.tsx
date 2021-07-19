@@ -19,6 +19,7 @@ function loginRedirect(url: string) {
           onClick={() => {
             notification.close('login-redirect');
           }}
+          rel='noreferrer'
         >
           here
         </a>{' '}
