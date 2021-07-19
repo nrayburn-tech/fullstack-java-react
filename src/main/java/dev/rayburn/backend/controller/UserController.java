@@ -1,5 +1,6 @@
 package dev.rayburn.backend.controller;
 
+import dev.rayburn.backend.entity.Address;
 import dev.rayburn.backend.entity.User;
 import dev.rayburn.backend.mapper.UserMapper;
 import dev.rayburn.backend.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @RequestMapping("/api/user")
@@ -43,6 +45,11 @@ public class UserController implements ControllerInterface<User, UserRepository,
         HttpSession session = request.getSession(true);
         userService.registerConfirmation(token, session);
         return new ModelAndView("redirect:/");
+    }
+
+    @GetMapping("/address/{id}")
+    public List<Address> getUserAddressList(@PathVariable Long id){
+        return userService.getUserAddressList(id);
     }
 
 }

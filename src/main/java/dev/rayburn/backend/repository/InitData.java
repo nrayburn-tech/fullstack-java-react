@@ -1,6 +1,7 @@
 package dev.rayburn.backend.repository;
 
 
+import dev.rayburn.backend.entity.Address;
 import dev.rayburn.backend.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -34,6 +35,11 @@ public class InitData {
         userOne.setPassword(passwordEncoder.encode("password"));
         userOne.setRoles(Set.of("USER"));
         userRepository.save(userOne);
+
+        Address addressOne = new Address();
+        addressOne.setLineOne("1234 Street One");
+        addressOne.setUser(userOne);
+        addressRepository.save(addressOne);
     }
 
 }

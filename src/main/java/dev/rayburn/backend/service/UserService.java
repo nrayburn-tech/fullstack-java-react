@@ -1,15 +1,14 @@
 package dev.rayburn.backend.service;
 
 import dev.rayburn.backend.auth.*;
-import dev.rayburn.backend.entity.User;
-import dev.rayburn.backend.entity.VerificationToken;
+import dev.rayburn.backend.entity.*;
 import dev.rayburn.backend.mail.MailServiceImpl;
 import dev.rayburn.backend.mapper.UserMapper;
-import dev.rayburn.backend.repository.UserRepository;
-import dev.rayburn.backend.repository.VerificationTokenRepository;
+import dev.rayburn.backend.repository.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Log4j2
@@ -35,15 +35,17 @@ public class UserService extends AbstractService<User, UserRepository, UserMappe
     private final MailServiceImpl mailService;
     private final VerificationTokenRepository verificationTokenRepository;
     private final JpaUserDetailsService userDetailsService;
+    private final AddressRepository addressRepository;
 
     @Autowired
-    UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, MailServiceImpl mailService, VerificationTokenRepository verificationTokenRepository, JpaUserDetailsService userDetailsService){
+    UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, MailServiceImpl mailService, VerificationTokenRepository verificationTokenRepository, JpaUserDetailsService userDetailsService, AddressRepository addressRepository){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.mailService = mailService;
         this.verificationTokenRepository = verificationTokenRepository;
         this.userDetailsService = userDetailsService;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -114,5 +116,9 @@ public class UserService extends AbstractService<User, UserRepository, UserMappe
             throw new RuntimeException("User could not be found");
         }
         return userPrincipal.getUser();
+    }
+
+    public List<Address> getUserAddressList(@NonNull Long userId){
+        return addressRepository.findAllByUserId(userId);
     }
 }

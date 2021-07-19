@@ -3,6 +3,7 @@ package dev.rayburn.backend.entity;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Data
 @Entity
@@ -16,4 +17,6 @@ public class Address extends AbstractEntity {
     private String city;
     private String zip;
     private String state;
+    @ManyToOne
+    private User user;
 }
