@@ -1,10 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { Button, Table } from 'antd';
-import UserForm from './UserForm';
-import { fetchJSON } from '../../lib/fetch';
-
+import { Button } from 'antd';
 import type { ColumnProps } from 'antd/es/table';
+import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+
+import { Table } from '../../components/index';
+import { fetchJSON } from '../../lib/fetch';
 import type { User } from '../../types';
+
+import UserForm from './UserForm';
 
 type IdAction = { id: number; type: 'id' };
 type RowAction = { rows: number[]; type: 'rows' };
@@ -135,7 +137,6 @@ export function UserTable() {
         }}
         columns={columns}
         dataSource={data}
-        rowKey='id'
         rowSelection={{
           selectedRowKeys: rows,
           onChange: (selected) => {

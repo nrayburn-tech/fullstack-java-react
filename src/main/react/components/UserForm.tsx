@@ -1,8 +1,11 @@
-import { Button, Checkbox, Col, Form, FormInstance, Input, Row, Select, Table } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { Address, User } from '../types';
-import { fetchJSON } from '../lib/fetch';
+import { Button, Checkbox, Col, Form, FormInstance, Input, Row, Select } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
+import React, { useEffect, useState } from 'react';
+
+import { fetchJSON } from '../lib/fetch';
+import { Address, User } from '../types';
+
+import Table from './Table';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -143,7 +146,7 @@ function AddressTable({ userId }: { userId: number }) {
     return () => controller.abort();
   }, [userId]);
 
-  return <Table columns={addressColumns} dataSource={tableData} />;
+  return <Table<Address> columns={addressColumns} dataSource={tableData} />;
 }
 
 export async function updateUser(data: User): Promise<User> {
