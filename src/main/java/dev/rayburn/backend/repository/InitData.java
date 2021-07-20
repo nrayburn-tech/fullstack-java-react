@@ -40,6 +40,10 @@ public class InitData {
         addressOne.setLineOne("1234 Street One");
         addressOne.setUser(userOne);
         addressRepository.save(addressOne);
+
+        Address addressTwo = new Address();
+        addressTwo.setLineOne("5678 Street Two");
+        addressRepository.save(addressTwo);
     }
 
 }

@@ -6,6 +6,10 @@ interface Entity {
   modifyDate?: Date;
 }
 
+export interface Data extends Entity {
+  [key: string]: any;
+}
+
 export interface User extends Entity {
   firstName?: string;
   lastName?: string;

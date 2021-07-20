@@ -1,23 +1,17 @@
-import { Button, Checkbox, Col, Form, FormInstance, Input, Row, Select } from 'antd';
+import { Checkbox, Col, Form, FormInstance, Input, Row, Select } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { fetchJSON } from '../lib/fetch';
 import { Address, User } from '../types';
 
-import Table from './Table';
+import AddressFormComp from './AddressForm';
+import TableWithForm from './TableWithForm';
 
 const { Item } = Form;
 const { Option } = Select;
 
 const addressColumns: ColumnProps<Address>[] = [
-  {
-    title: 'Actions',
-    render: (val, record) => {
-      return <Button onClick={() => {}}>Open</Button>;
-    },
-    width: '100px'
-  },
   {
     title: 'Line One',
     dataIndex: 'lineOne'
@@ -127,26 +121,15 @@ function UserForm() {
 }
 
 function AddressTable({ userId }: { userId: number }) {
-  const [tableData, setTableData] = useState<Address[]>([]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-    if (userId) {
-      getAddressList(userId, signal)
-        .then((data) => {
-          setTableData(data);
-        })
-        .catch((err) => {
-          if (err.name !== 'AbortError') {
-            throw err;
-          }
-        });
-    }
-    return () => controller.abort();
-  }, [userId]);
-
-  return <Table<Address> columns={addressColumns} dataSource={tableData} />;
+  return (
+    <TableWithForm
+      url='/api/address'
+      urlList={`/api/user/address/${userId}`}
+      columns={addressColumns}
+    >
+      <AddressFormComp />
+    </TableWithForm>
+  );
 }
 
 export async function updateUser(data: User): Promise<User> {

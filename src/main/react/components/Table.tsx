@@ -1,9 +1,11 @@
 import { Table as AntTable, TableProps as AntTableProps } from 'antd';
 import React from 'react';
 
-export type TableProps<T extends Record<string, any>> = Omit<AntTableProps<T>, 'rowKey'>;
+import { Data } from '../types';
 
-function Table<T extends Record<string, any>>(props: TableProps<T>) {
+export type TableProps<T extends Data> = Omit<AntTableProps<T>, 'rowKey'>;
+
+function Table<T extends Data>(props: TableProps<T>) {
   return <AntTable rowKey='id' {...props} />;
 }
 
