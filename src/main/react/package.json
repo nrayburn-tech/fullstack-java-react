@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "types": "tsc"
+    "types": "tsc",
+    "lint": "eslint . --fix"
   },
   "dependencies": {
     "antd": "^4.16.6",
@@ -31,6 +32,8 @@
     "babel-jest": "^27.0.6",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
     "identity-obj-proxy": "^3.0.0",

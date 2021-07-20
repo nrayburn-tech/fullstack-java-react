@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
 import { Form } from 'antd';
 import { cloneDeep, unset } from 'lodash';
+import React, { useCallback, useEffect } from 'react';
+
 import UserFormComp, { getUser, updateUser } from '../components/UserForm';
 import { User } from '../types';
 

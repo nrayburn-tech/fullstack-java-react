@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
+import React from 'react';
 import './login.css';
 
 async function loginUser(user: string, pass: string, remember: boolean) {

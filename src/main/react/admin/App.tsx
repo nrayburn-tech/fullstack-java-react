@@ -1,7 +1,8 @@
-import React from 'react';
 import { Tabs } from 'antd';
-import { UserTable } from './User/UserTable';
+import React from 'react';
+
 import { AddressTable } from './Address/AddressTable';
+import { UserTable } from './User/UserTable';
 
 const { TabPane } = Tabs;
 

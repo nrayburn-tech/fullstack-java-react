@@ -1,7 +1,7 @@
-import React, { useEffect, MouseEvent, useCallback, useState } from 'react';
 import { Form, Modal } from 'antd';
-import UserFormComp, { getUser, updateUser } from '../../components/UserForm';
+import React, { useEffect, MouseEvent, useCallback, useState } from 'react';
 
+import UserFormComp, { getUser, updateUser } from '../../components/UserForm';
 import type { FormProps, User } from '../../types';
 
 const { useForm } = Form;

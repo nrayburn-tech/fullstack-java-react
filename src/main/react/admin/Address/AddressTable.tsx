@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Table } from 'antd';
-import AddressForm from './AddressForm';
-import { fetchJSON } from '../../lib/fetch';
-
 import type { ColumnProps } from 'antd/es/table';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { fetchJSON } from '../../lib/fetch';
 import type { Address, User } from '../../types';
+
+import AddressForm from './AddressForm';
 
 const url = '/api/address';
 export function AddressTable() {
@@ -104,7 +105,7 @@ export function AddressTable() {
     setId(0);
     // Update the table's data.
     await refreshData();
-  }, [refreshData]);
+  }, [id, refreshData]);
 
   const handleOk = useCallback(async () => {
     await closeForm();

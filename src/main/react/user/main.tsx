@@ -1,8 +1,9 @@
+import { Button } from 'antd';
 import React, { StrictMode } from 'react';
 import { render } from 'react-dom';
+
 import UserForm from './UserForm';
 import '../index.css';
-import { Button } from 'antd';
 
 render(
   <StrictMode>

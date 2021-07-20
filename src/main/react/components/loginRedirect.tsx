@@ -1,5 +1,5 @@
-import React from 'react';
 import { notification } from 'antd';
+import React from 'react';
 
 export type redirect = (url: string) => void;
 /**

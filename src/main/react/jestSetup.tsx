@@ -20,7 +20,6 @@ jest.mock('antd', () => {
 
   const Select = (props: Omit<SelectProps<any>, 'onChange'> & { onChange: ChangeEventHandler }) => {
     return (
-      // eslint-disable-next-line jsx-a11y/no-onchange
       <select
         value={props.value}
         defaultValue={props.defaultValue}
