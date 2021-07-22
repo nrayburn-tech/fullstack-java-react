@@ -65,7 +65,9 @@ export interface TableWithFormProps<T extends Data>
   /** Function called after creating a record. */
   afterSaveRecord?: (record: T) => void | Promise<void>;
   /** Props passed to the modal */
-  modal?: Omit<ModalProps, 'children' | 'visible' | 'onOk' | 'onCancel'>;
+  modal?: Omit<ModalProps, 'children' | 'visible' | 'onOk' | 'onCancel'> & {
+    padding?: number | string;
+  };
 }
 export interface TableWithAPIRef<T extends Data> {
   id: number;
@@ -248,6 +250,7 @@ const TableWithForm = forwardRef(
           }}
           dataSource={data}
           columns={columns}
+          bordered={true}
           {...props}
         />
         <TableForm
@@ -264,12 +267,16 @@ const TableWithForm = forwardRef(
 interface FormProps<T extends Data> {
   children: ReactNode | ((props?: unknown) => ReactNode);
   form: FormInstance<T>;
-  modal: Omit<ModalProps, 'children'>;
+  modal: Omit<ModalProps, 'children'> & { padding?: number | string };
 }
 
 function TableForm<T extends Data>({ children, form, modal }: FormProps<T>) {
+  const myStyle = {
+    padding: '0 ' + (typeof modal.padding === 'number' ? `${modal.padding}px` : modal.padding),
+    ...modal.style
+  };
   return (
-    <Modal width='auto' {...modal}>
+    <Modal width='auto' {...modal} style={myStyle}>
       <Form<T> form={form}>{typeof children === 'function' ? children() : children}</Form>
     </Modal>
   );
