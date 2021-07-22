@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 auth.inMemoryAuthentication()
                         .withUser("admin")
                         .password(passwordEncoder().encode("admin"))
-                        .roles("USER", "ADMIN");
+                        .authorities("USER", "ADMIN");
             }
         } catch (Exception e){
             System.err.println("Error configuring local admin user.");
@@ -75,7 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .antMatchers("/assets/**", "/login", "/api/login", "/api/user/register", "/api/user/registerConfirm").permitAll()
-                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/admin").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()

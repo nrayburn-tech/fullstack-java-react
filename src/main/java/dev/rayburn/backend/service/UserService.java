@@ -18,6 +18,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -115,7 +116,9 @@ public class UserService extends AbstractService<User, UserRepository, UserMappe
         if (userPrincipal == null || userPrincipal.getUser() == null) {
             throw new RuntimeException("User could not be found");
         }
-        return userPrincipal.getUser();
+        User user = getRepository().findById(userPrincipal.getUser().getId()).orElseThrow();
+        Utility.setAuth(user);
+        return user;
     }
 
     public List<Address> getUserAddressList(@NonNull Long userId){

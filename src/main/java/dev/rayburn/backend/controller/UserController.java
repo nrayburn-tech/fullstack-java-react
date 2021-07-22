@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -36,6 +37,7 @@ public class UserController implements ControllerInterface<User, UserRepository,
     }
 
     @PostMapping("/register")
+    @Transactional
     public User register(@RequestBody User user){
         return userService.register(user);
     }
