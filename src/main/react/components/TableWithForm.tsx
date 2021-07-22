@@ -273,6 +273,7 @@ interface FormProps<T extends Data> {
 function TableForm<T extends Data>({ children, form, modal }: FormProps<T>) {
   const myStyle = {
     padding: '0 ' + (typeof modal.padding === 'number' ? `${modal.padding}px` : modal.padding),
+    top: '20px',
     ...modal.style
   };
   return (
