@@ -96,6 +96,7 @@ const TableWithForm = forwardRef(
   ) => {
     const [form] = useForm();
     const [data, setData] = useState<T[]>([]);
+    const [initialValues, setInitialValues] = useState<T>();
     const [{ id, rows }, dispatch] = useReducer(reducer, { id: 0, rows: [] });
 
     useEffect(() => {
@@ -126,6 +127,7 @@ const TableWithForm = forwardRef(
       // Send an empty body, so it doesn't error on the backend.
       const data = await fetchJSON(url, { method: 'POST', body: JSON.stringify(initData ?? {}) });
       await afterCreateRecord?.(data);
+      setInitialValues(data);
       // Set the id, so it automatically opens the new form.
       dispatch({ type: 'id', id: data.id });
       // Eventually update the tables data, timeout to let rendering the form have priority.
@@ -161,6 +163,7 @@ const TableWithForm = forwardRef(
 
     const closeForm = useCallback(() => {
       form.resetFields();
+      setInitialValues(undefined);
       dispatch({ type: 'id', id: 0 });
       setTimeout(refreshData, 0);
     }, [form, refreshData]);
@@ -168,10 +171,10 @@ const TableWithForm = forwardRef(
     const openForm = useCallback(
       async (id: number) => {
         const data = await fetchJSON(`${url}/${id}`);
-        form.setFieldsValue(data);
+        setInitialValues(data);
         dispatch({ type: 'id_rows', id: id, rows: [id] });
       },
-      [form, url]
+      [url]
     );
 
     const cancelForm = useCallback(async () => {
@@ -185,11 +188,21 @@ const TableWithForm = forwardRef(
         return;
       }
       await form.validateFields();
-      const formData = form.getFieldsValue(true);
+      const touched: any[] = [];
+      const formData = form.getFieldsValue(true, (meta) => {
+        if (meta.name.join('.') === 'id') {
+          return true;
+        }
+        if (meta.touched && !meta.errors.length) {
+          touched.push({ ...meta, touched: false });
+        }
+        return meta.touched;
+      });
       const apiData = await fetchJSON(url, {
         method: 'PATCH',
         body: JSON.stringify(merge(formData, initData ?? {}))
       });
+      form.setFields(touched);
       await afterSaveRecord?.(apiData);
       closeForm();
     }, [afterSaveRecord, beforeSaveRecord, closeForm, form, url]);
@@ -253,12 +266,15 @@ const TableWithForm = forwardRef(
           bordered={true}
           {...props}
         />
-        <TableForm
-          form={form}
-          modal={{ ...modal, visible: !!id, onCancel: cancelForm, onOk: saveForm }}
-        >
-          {children}
-        </TableForm>
+        {initialValues ? (
+          <TableForm
+            form={form}
+            initialValues={initialValues}
+            modal={{ ...modal, visible: !!id, onCancel: cancelForm, onOk: saveForm }}
+          >
+            {children}
+          </TableForm>
+        ) : null}
       </div>
     );
   }
@@ -268,9 +284,10 @@ interface FormProps<T extends Data> {
   children: ReactNode | ((props?: unknown) => ReactNode);
   form: FormInstance<T>;
   modal: Omit<ModalProps, 'children'> & { padding?: number | string };
+  initialValues: T;
 }
 
-function TableForm<T extends Data>({ children, form, modal }: FormProps<T>) {
+function TableForm<T extends Data>({ children, form, initialValues, modal }: FormProps<T>) {
   const myStyle = {
     padding: '0 ' + (typeof modal.padding === 'number' ? `${modal.padding}px` : modal.padding),
     top: '20px',
@@ -278,7 +295,12 @@ function TableForm<T extends Data>({ children, form, modal }: FormProps<T>) {
   };
   return (
     <Modal width='auto' {...modal} style={myStyle}>
-      <Form<T> labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} form={form}>
+      <Form<T>
+        labelCol={{ span: 24 }}
+        wrapperCol={{ span: 24 }}
+        form={form}
+        initialValues={initialValues}
+      >
         {typeof children === 'function' ? children() : children}
       </Form>
     </Modal>

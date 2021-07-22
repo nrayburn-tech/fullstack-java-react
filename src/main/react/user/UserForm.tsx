@@ -1,6 +1,5 @@
 import { Form } from 'antd';
-import { cloneDeep, unset } from 'lodash';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import UserFormComp, { getUser, updateUser } from '../components/UserForm';
 import { User } from '../types';
@@ -12,36 +11,43 @@ const labelCol = { span: 24 };
 let dataChangeTimeout: number;
 function UserForm() {
   const [form] = useForm();
+  const [initialValues, setInitialValues] = useState<User>();
   useEffect(() => {
     getUser(null).then((data) => {
-      form.setFieldsValue(data);
+      setInitialValues(data);
     });
   }, [form]);
 
-  const handleDataChange = useCallback(
-    (data) => {
-      if (!Array.isArray(data)) {
-        return;
-      }
-      clearTimeout(dataChangeTimeout);
-      dataChangeTimeout = window.setTimeout(() => {
-        const saveData = cloneDeep(form.getFieldsValue());
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].errors.length) {
-            unset(saveData, data[i].name);
-          }
+  const handleDataChange = useCallback(() => {
+    clearTimeout(dataChangeTimeout);
+    dataChangeTimeout = window.setTimeout(() => {
+      const touched: any[] = [];
+      const saveData = form.getFieldsValue(true, (meta) => {
+        if (meta.name.join('.') === 'id') {
+          return true;
         }
-        updateUser(saveData).then();
-      }, 500);
-    },
-    [form]
-  );
+        if (meta.touched && !meta.errors.length) {
+          touched.push({ ...meta, touched: false });
+        }
+        return meta.touched;
+      });
 
-  return (
-    <Form<User> form={form} labelCol={labelCol} onFieldsChange={handleDataChange}>
+      updateUser(saveData).then(() => {
+        form.setFields(touched);
+      });
+    }, 500);
+  }, [form]);
+
+  return initialValues ? (
+    <Form<User>
+      form={form}
+      labelCol={labelCol}
+      onFieldsChange={handleDataChange}
+      initialValues={initialValues}
+    >
       <UserFormComp />
     </Form>
-  );
+  ) : null;
 }
 
 export default UserForm;
