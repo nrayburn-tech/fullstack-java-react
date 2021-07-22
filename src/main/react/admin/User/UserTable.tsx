@@ -22,7 +22,7 @@ export function UserTable() {
 
   return (
     <div>
-      <TableWithForm url={url} columns={columns}>
+      <TableWithForm url={url} columns={columns} modal={{ title: 'User' }}>
         <UserFormComp />
       </TableWithForm>
     </div>

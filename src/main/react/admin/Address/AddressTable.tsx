@@ -5,8 +5,7 @@ import AddressFormComp from '../../components/AddressForm';
 import TableWithForm from '../../components/TableWithForm';
 import type { Address } from '../../types';
 
-const url = '/api/address';
-export function AddressTable() {
+export function AddressTable({ userId }: { userId?: number }) {
   const columns: ColumnProps<Address>[] = useMemo(() => {
     return [
       {
@@ -34,7 +33,12 @@ export function AddressTable() {
 
   return (
     <div>
-      <TableWithForm url={url} columns={columns}>
+      <TableWithForm
+        url='/api/address'
+        urlList={userId ? `/api/user/address/${userId}` : undefined}
+        columns={columns}
+        modal={{ title: 'Address' }}
+      >
         <AddressFormComp />
       </TableWithForm>
     </div>

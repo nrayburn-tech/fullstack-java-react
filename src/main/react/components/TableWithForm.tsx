@@ -64,6 +64,8 @@ export interface TableWithFormProps<T extends Data>
   beforeSaveRecord?: () => T | false | Promise<T | false>;
   /** Function called after creating a record. */
   afterSaveRecord?: (record: T) => void | Promise<void>;
+  /** Props passed to the modal */
+  modal?: Omit<ModalProps, 'children' | 'visible' | 'onOk' | 'onCancel'>;
 }
 export interface TableWithAPIRef<T extends Data> {
   id: number;
@@ -85,6 +87,7 @@ const TableWithForm = forwardRef(
       columns: initColumns,
       url,
       urlList,
+      modal,
       ...props
     }: TableWithFormProps<T>,
     ref: ForwardedRef<unknown>
@@ -247,7 +250,10 @@ const TableWithForm = forwardRef(
           columns={columns}
           {...props}
         />
-        <TableForm form={form} visible={!!id} handleCancel={cancelForm} handleOk={saveForm}>
+        <TableForm
+          form={form}
+          modal={{ ...modal, visible: !!id, onCancel: cancelForm, onOk: saveForm }}
+        >
           {children}
         </TableForm>
       </div>
@@ -258,20 +264,12 @@ const TableWithForm = forwardRef(
 interface FormProps<T extends Data> {
   children: ReactNode | ((props?: unknown) => ReactNode);
   form: FormInstance<T>;
-  visible: boolean;
-  handleOk: ModalProps['onOk'];
-  handleCancel: ModalProps['onCancel'];
+  modal: Omit<ModalProps, 'children'>;
 }
 
-function TableForm<T extends Data>({
-  children,
-  form,
-  handleCancel,
-  handleOk,
-  visible
-}: FormProps<T>) {
+function TableForm<T extends Data>({ children, form, modal }: FormProps<T>) {
   return (
-    <Modal visible={visible} onOk={handleOk} onCancel={handleCancel} width='auto'>
+    <Modal width='auto' {...modal}>
       <Form<T> form={form}>{typeof children === 'function' ? children() : children}</Form>
     </Modal>
   );

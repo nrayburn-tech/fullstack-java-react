@@ -1,38 +1,12 @@
 import { Checkbox, Col, Form, FormInstance, Input, Row, Select } from 'antd';
-import { ColumnProps } from 'antd/lib/table';
 import React from 'react';
 
+import { AddressTable } from '../admin/Address/AddressTable';
 import { fetchJSON } from '../lib/fetch';
-import { Address, User } from '../types';
-
-import AddressFormComp from './AddressForm';
-import TableWithForm from './TableWithForm';
+import { User } from '../types';
 
 const { Item } = Form;
 const { Option } = Select;
-
-const addressColumns: ColumnProps<Address>[] = [
-  {
-    title: 'Line One',
-    dataIndex: 'lineOne'
-  },
-  {
-    title: 'Line Two',
-    dataIndex: 'lineTwo'
-  },
-  {
-    title: 'City',
-    dataIndex: 'city'
-  },
-  {
-    title: 'State',
-    dataIndex: 'state'
-  },
-  {
-    title: 'Zip',
-    dataIndex: 'zip'
-  }
-];
 
 function UserForm() {
   return (
@@ -120,28 +94,12 @@ function UserForm() {
   );
 }
 
-function AddressTable({ userId }: { userId: number }) {
-  return (
-    <TableWithForm
-      url='/api/address'
-      urlList={`/api/user/address/${userId}`}
-      columns={addressColumns}
-    >
-      <AddressFormComp />
-    </TableWithForm>
-  );
-}
-
 export async function updateUser(data: User): Promise<User> {
   return await fetchJSON('/api/user', { method: 'PATCH', body: JSON.stringify(data) });
 }
 
 export async function getUser(id: number | null, signal?: AbortSignal): Promise<User> {
   return await fetchJSON(`/api/user/${id ? id : 'auth'}`, { signal });
-}
-
-export async function getAddressList(id: number | null, signal: AbortSignal): Promise<Address[]> {
-  return await fetchJSON(`/api/user/address/${id}`, { signal });
 }
 
 export default UserForm;
