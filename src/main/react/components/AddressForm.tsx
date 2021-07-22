@@ -2,7 +2,7 @@ import { AutoComplete, Button, Col, Form, FormInstance, Input, Row, SelectProps 
 import React, { useCallback, useState } from 'react';
 
 import { fetchJSON } from '../lib/fetch';
-import { Address, User } from '../types';
+import { Address } from '../types';
 
 const { Item } = Form;
 
@@ -171,14 +171,6 @@ async function getAddressResults(text: string) {
     `&layers=address&boundary.gid=whosonfirst:country:85633793`;
   const data = await fetchJSON(url);
   return data.features as AddressResult[];
-}
-
-export async function updateAddress(data: Address): Promise<Address> {
-  return await fetchJSON('/api/address', { method: 'PATCH', body: JSON.stringify(data) });
-}
-
-export async function getAddress(id: number, signal?: AbortSignal): Promise<User> {
-  return await fetchJSON(`/api/address/${id}`, { signal });
 }
 
 interface AddressResult {
