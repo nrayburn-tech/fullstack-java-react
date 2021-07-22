@@ -1,9 +1,10 @@
 import { Button, Col, Row } from 'antd';
-import React, { StrictMode } from 'react';
+import React, { lazy, StrictMode, Suspense } from 'react';
 import { render } from 'react-dom';
 
-import UserForm from './UserForm';
 import '../index.css';
+
+const UserForm = lazy(() => import('./UserForm'));
 
 render(
   <StrictMode>
@@ -23,7 +24,9 @@ render(
     </Row>
     <Row>
       <Col span={24}>
-        <UserForm />
+        <Suspense fallback='Loading...'>
+          <UserForm />
+        </Suspense>
       </Col>
     </Row>
   </StrictMode>,

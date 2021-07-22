@@ -41,3 +41,5 @@ export function AddressTable({ userId }: { userId?: number }) {
     </div>
   );
 }
+
+export default AddressTable;
