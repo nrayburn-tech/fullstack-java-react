@@ -111,6 +111,10 @@ public class UserService extends AbstractService<User, UserRepository, UserMappe
         }
     }
 
+    //TODO: This only refreshes the context on another getAuth request.
+    // We really need to refresh it on a getAuth request and
+    // anytime a request is forbidden, to check if any roles
+    // have been changed.
     public User getAuth(){
         UserPrincipal userPrincipal = Utility.getAuth();
         if (userPrincipal == null || userPrincipal.getUser() == null) {
