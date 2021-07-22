@@ -18,7 +18,6 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
