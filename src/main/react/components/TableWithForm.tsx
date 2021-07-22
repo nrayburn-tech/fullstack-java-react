@@ -278,7 +278,9 @@ function TableForm<T extends Data>({ children, form, modal }: FormProps<T>) {
   };
   return (
     <Modal width='auto' {...modal} style={myStyle}>
-      <Form<T> form={form}>{typeof children === 'function' ? children() : children}</Form>
+      <Form<T> labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} form={form}>
+        {typeof children === 'function' ? children() : children}
+      </Form>
     </Modal>
   );
 }
