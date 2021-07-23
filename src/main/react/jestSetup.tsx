@@ -1,5 +1,6 @@
 import { SelectProps } from 'antd';
 import React, { ChangeEventHandler, ReactNode } from 'react';
+import '@testing-library/jest-dom/extend-expect';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
