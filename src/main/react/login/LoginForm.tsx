@@ -1,12 +1,15 @@
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
 import React from 'react';
-import './login.css';
 
-async function loginUser(user: string, pass: string, remember: boolean) {
+import './login.css';
+import { fetchJSON } from '../lib/fetch';
+import { Login } from '../types';
+
+async function loginUser(user: string, pass: string, remember?: boolean) {
   const formData = new FormData();
   formData.append('username', user);
   formData.append('password', pass);
-  formData.append('remember', String(remember));
+  formData.append('remember', String(!!remember));
   const res = await fetch('/api/login', {
     method: 'POST',
     body: formData
@@ -19,19 +22,15 @@ async function loginUser(user: string, pass: string, remember: boolean) {
 }
 
 async function registerUser(user: string, pass: string) {
-  const res = await fetch('/api/user/register', {
+  await fetchJSON('/api/user/register', {
     method: 'POST',
-    body: JSON.stringify({ email: user, password: pass }),
-    headers: {
-      'Content-Type': 'application/json'
-    }
+    body: JSON.stringify({ email: user, password: pass })
   });
-  await res.json();
 }
 
 function LoginForm() {
-  const [form] = Form.useForm();
-  const login = async (values: any) => {
+  const [form] = Form.useForm<Login>();
+  const login = async (values: Login) => {
     await loginUser(values.username, values.password, values.remember);
   };
 
@@ -41,7 +40,12 @@ function LoginForm() {
   };
 
   return (
-    <Form initialValues={{ remember: true }} onFinish={login} form={form} className='login-form'>
+    <Form<Login>
+      initialValues={{ remember: true }}
+      onFinish={login}
+      form={form}
+      className='login-form'
+    >
       <Row>
         <Col span={24}>
           <Form.Item
@@ -70,7 +74,7 @@ function LoginForm() {
       <Row style={{ marginBottom: '24px' }}>
         <Col span={12}>
           <Form.Item name='remember' valuePropName='checked' style={{ marginBottom: '0' }}>
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>Remember Me</Checkbox>
           </Form.Item>
         </Col>
         <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>

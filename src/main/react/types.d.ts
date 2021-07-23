@@ -10,6 +10,12 @@ export interface Data extends Entity {
   [key: string]: any;
 }
 
+export interface Login {
+  username: string;
+  password: string;
+  remember?: boolean;
+}
+
 export interface User extends Entity {
   firstName?: string;
   lastName?: string;
