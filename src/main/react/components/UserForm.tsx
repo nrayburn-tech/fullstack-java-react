@@ -1,14 +1,21 @@
 import { Checkbox, Col, Form, FormInstance, Input, Row, Select } from 'antd';
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { AddressTable } from '../admin/Address/AddressTable';
+import { AuthContext } from '../context/auth';
 import { fetchJSON } from '../lib/fetch';
+import { hasRole } from '../lib/role';
 import { User } from '../types';
 
 const { Item } = Form;
 const { Option } = Select;
 
 function UserForm() {
+  const auth = useContext(AuthContext);
+  const isAdmin = hasRole('ADMIN', auth?.roles);
+
+  console.log(auth, isAdmin);
+
   return (
     <>
       <Item hidden name='id'>
@@ -69,7 +76,7 @@ function UserForm() {
       <Row>
         <Col span={24}>
           <Item name='roles' label='Roles'>
-            <Select mode='multiple' allowClear>
+            <Select mode='multiple' allowClear disabled={!isAdmin}>
               <Option value='USER'>User</Option>
               <Option value='ADMIN'>Admin</Option>
             </Select>
