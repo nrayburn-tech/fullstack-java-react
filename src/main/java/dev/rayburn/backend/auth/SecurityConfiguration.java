@@ -1,5 +1,6 @@
 package dev.rayburn.backend.auth;
 
+import dev.rayburn.backend.entity.User;
 import dev.rayburn.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.*;
 
 import java.util.Collections;
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
@@ -50,10 +52,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(daoAuthenticationProvider());
         try {
             if (adminUser != null && adminPass != null){
-                auth.inMemoryAuthentication()
-                        .withUser("admin")
-                        .password(passwordEncoder().encode("admin"))
-                        .authorities("USER", "ADMIN");
+                User user = userRepository.findByEmailIgnoreCase(adminUser).orElse(null);
+                if (user == null){
+                    user = new User();
+                    user.setEmail(adminUser);
+                    user.setPassword(passwordEncoder().encode(adminPass));
+                    user.setRoles(Set.of("USER", "ADMIN"));
+                    user.setEnabled(true);
+                    user.setFirstName("admin");
+                    user.setLastName("admin");
+                    userRepository.save(user);
+                }
             }
         } catch (Exception e){
             System.err.println("Error configuring local admin user.");
