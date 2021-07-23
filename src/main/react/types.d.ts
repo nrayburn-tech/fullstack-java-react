@@ -1,5 +1,3 @@
-import { MouseEvent } from 'react';
-
 interface Entity {
   id: number;
   createDate?: Date;
@@ -21,6 +19,10 @@ export interface User extends Entity {
   lastName?: string;
   email?: string;
   password?: string;
+  enabled?: boolean;
+  roles?: string[];
+  phoneOne?: string;
+  phoneTwo?: string;
 }
 
 export interface Address extends Entity {
@@ -31,17 +33,4 @@ export interface Address extends Entity {
   city?: string;
   zip?: string;
   state?: string;
-}
-
-export interface FormProps {
-  /** Id of the record to fetch. */
-  id: number;
-  /** Always run first on cancel. */
-  beforeCancel?: (e: MouseEvent<HTMLElement>) => void;
-  /** Always run first on ok. */
-  beforeOk?: (e: MouseEvent<HTMLElement>) => void;
-  /** Always run last on cancel. */
-  afterCancel?: (e: MouseEvent<HTMLElement>) => void;
-  /** Always run last on ok, if form validates and saves. */
-  afterOk?: (e: MouseEvent<HTMLElement>) => void;
 }
