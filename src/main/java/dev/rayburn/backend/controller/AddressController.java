@@ -1,7 +1,6 @@
 package dev.rayburn.backend.controller;
 
 import dev.rayburn.backend.entity.Address;
-import dev.rayburn.backend.mapper.AddressMapper;
 import dev.rayburn.backend.repository.AddressRepository;
 import dev.rayburn.backend.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/api/address")
 @RestController
-public class AddressController implements ControllerInterface<Address, AddressRepository, AddressService, AddressMapper> {
+public class AddressController implements ControllerInterface<Address, AddressRepository, AddressService> {
 
     private final AddressService addressService;
 
     @Autowired
-    AddressController(AddressService addressService){
+    AddressController(AddressService addressService) {
         this.addressService = addressService;
     }
 

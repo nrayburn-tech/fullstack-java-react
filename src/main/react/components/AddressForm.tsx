@@ -164,6 +164,7 @@ function AddressWrapper() {
 let autocompleteTimer: number;
 const apiKey = import.meta.env.VITE_GEOCODE_API;
 const autocompleteUrl = 'https://api.geocode.earth/v1/autocomplete';
+
 async function getAddressResults(text: string) {
   const url =
     `${autocompleteUrl}?api_key=${apiKey}&text=${text}` +

@@ -24,6 +24,7 @@ type IdAction = { id: number; type: 'id' };
 type RowAction = { rows: number[]; type: 'rows' };
 type IdAndRowAction = { id: number; rows: number[]; type: 'id_rows' };
 type Action = IdAction | RowAction | IdAndRowAction;
+
 function reducer(state: { id: number; rows: number[] }, action: Action) {
   if (action.type === 'id') {
     return { ...state, id: action.id };
@@ -34,6 +35,7 @@ function reducer(state: { id: number; rows: number[] }, action: Action) {
   }
   throw new Error('Incorrect action type supplied.');
 }
+
 export interface TableWithFormProps<T extends Data>
   extends Omit<TableProps<T>, 'dataSource' | 'title' | 'rowSelection'> {
   /** Children of the form. */
@@ -69,6 +71,7 @@ export interface TableWithFormProps<T extends Data>
     padding?: number | string;
   };
 }
+
 export interface TableWithAPIRef<T extends Data> {
   id: number;
   rows: readonly number[];
@@ -189,15 +192,7 @@ const TableWithForm = forwardRef(
       }
       await form.validateFields();
       const touched: any[] = [];
-      const formData = form.getFieldsValue(true, (meta) => {
-        if (meta.name.join('.') === 'id') {
-          return true;
-        }
-        if (meta.touched && !meta.errors.length) {
-          touched.push({ ...meta, touched: false });
-        }
-        return meta.touched;
-      });
+      const formData = form.getFieldsValue(true);
       const apiData = await fetchJSON(url, {
         method: 'PATCH',
         body: JSON.stringify(merge(formData, initData ?? {}))
