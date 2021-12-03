@@ -11,11 +11,6 @@
       "description": "This url is used when generating URLs.  For example, registration links."
     },
     {
-      "name": "spring.mail.from",
-      "type": "java.lang.String",
-      "description": "This is the email address that should send the email.  If it is not specified, then spring.mail.username is used instead."
-    },
-    {
       "name": "spring.security.admin.user",
       "type": "java.lang.String",
       "description": "The username of an in memory admin user to use for authentication."
