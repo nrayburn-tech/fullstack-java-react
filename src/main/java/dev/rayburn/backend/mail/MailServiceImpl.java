@@ -2,6 +2,7 @@ package dev.rayburn.backend.mail;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.mail.MailException;
@@ -19,6 +20,8 @@ public class MailServiceImpl implements MailSender {
      * for {@link dev.rayburn.backend.mail.Config}
      */
     private final JavaMailSenderImpl mailSender;
+    @Value("${app.mail.from:#{null}}")
+    private String from;
 
     @Autowired
     public MailServiceImpl(@Nullable JavaMailSenderImpl mailSender) {
@@ -30,6 +33,9 @@ public class MailServiceImpl implements MailSender {
         if (mailSender != null) {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(to);
+            if (from != null) {
+                message.setFrom(from);
+            }
             message.setSubject(subject);
             message.setText(text);
             send(message);

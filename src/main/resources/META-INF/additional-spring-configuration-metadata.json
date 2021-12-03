@@ -28,12 +28,17 @@
     {
       "name": "spring.security.rememberme.cookie.length",
       "type": "java.lang.Integer",
-      "description": "The length to use for the remember me login cookie."
+      "description": "The length of time in seconds that the user is remembered for."
     },
     {
       "name": "spring.security.rememberme.cookie.key",
       "type": "java.lang.String",
       "description": "The secret key to use when generating the remember me login cookie."
+    },
+    {
+      "name": "app.mail.from",
+      "type": "java.lang.String",
+      "description": "The email address that the mail is sent from. If not defined, spring.mail.username is used."
     }
   ]
 }
