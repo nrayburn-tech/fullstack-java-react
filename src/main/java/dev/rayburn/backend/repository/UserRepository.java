@@ -8,4 +8,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends RepositoryInterface<User> {
     Optional<User> findByEmailIgnoreCase(String email);
+
+    Long countAllByEnabledIsTrue();
+    
 }

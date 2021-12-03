@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Log4j2
@@ -91,8 +92,13 @@ public class UserService extends AbstractService<User, UserRepository> {
         if (vToken.getExpiration().isAfter(LocalDateTime.now())) {
             log.info("Valid token.  User is being enabled and authenticated.");
             User user = vToken.getUser();
+            // The first user to register is an admin.
+            long userCount = userRepository.countAllByEnabledIsTrue();
+            if (userCount == 0) {
+                user.setRoles(Set.of("ADMIN"));
+            }
             user.setEnabled(true);
-            userRepository.save(user);
+            user = userRepository.save(user);
             UserDetails userDetails = userDetailsService.loadUserByUser(user);
             try {
                 UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
