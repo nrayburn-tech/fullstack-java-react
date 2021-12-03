@@ -35,7 +35,7 @@ function LoginForm() {
   };
 
   const register = async () => {
-    const { username, password } = form.getFieldsValue();
+    const { username, password } = form.getFieldsValue(true);
     await registerUser(username, password);
   };
 

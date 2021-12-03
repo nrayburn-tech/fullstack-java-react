@@ -9,6 +9,7 @@ const { useForm } = Form;
 const labelCol = { span: 24 };
 
 let dataChangeTimeout: number;
+
 function UserForm() {
   const [form] = useForm();
   const [initialValues, setInitialValues] = useState<User>();
@@ -22,15 +23,7 @@ function UserForm() {
     clearTimeout(dataChangeTimeout);
     dataChangeTimeout = window.setTimeout(() => {
       const touched: any[] = [];
-      const saveData = form.getFieldsValue(true, (meta) => {
-        if (meta.name.join('.') === 'id') {
-          return true;
-        }
-        if (meta.touched && !meta.errors.length) {
-          touched.push({ ...meta, touched: false });
-        }
-        return meta.touched;
-      });
+      const saveData = form.getFieldsValue(true);
 
       updateUser(saveData).then(() => {
         form.setFields(touched);
