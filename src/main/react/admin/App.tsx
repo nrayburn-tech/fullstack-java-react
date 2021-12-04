@@ -1,5 +1,5 @@
 import { Tabs } from 'antd';
-import React, { Suspense, lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import Auth from '../context/auth';
 

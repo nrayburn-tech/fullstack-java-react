@@ -27,6 +27,7 @@ const addressColumns: ColumnProps<Address>[] = [
     dataIndex: 'zip'
   }
 ];
+
 export function AddressTable({ userId }: { userId?: number }) {
   return (
     <div>

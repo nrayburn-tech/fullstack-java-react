@@ -15,6 +15,7 @@ const userColumns: ColumnProps<User>[] = [
     dataIndex: 'lastName'
   }
 ];
+
 export function UserTable() {
   return (
     <div>
@@ -24,4 +25,5 @@ export function UserTable() {
     </div>
   );
 }
+
 export default UserTable;

@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import React from 'react';
 
 export type redirect = (url: string) => void;
+
 /**
  * Show a notification with a link to open the login
  * page in a new tab/page.

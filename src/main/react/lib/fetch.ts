@@ -2,6 +2,7 @@
 import type { redirect } from '../components/loginRedirect';
 
 let loginRedirect: redirect;
+
 /**
  * Takes the same parameters as fetch, but sets the `Content-Type` to `application/json`.
  * If the response is not ok, throws an error with the request and response info.
