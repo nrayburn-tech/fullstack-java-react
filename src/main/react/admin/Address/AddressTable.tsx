@@ -35,6 +35,9 @@ export function AddressTable({ userId }: { userId?: number }) {
         urlList={userId ? `/api/user/address/${userId}` : undefined}
         columns={addressColumns}
         modal={{ title: 'Address' }}
+        afterCreateRecord={(data) => {
+          data.user = { id: userId };
+        }}
       >
         <AddressFormComp />
       </TableWithForm>
